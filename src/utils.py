@@ -38,11 +38,15 @@ class UserInputSanitizer(commands.Converter):
         return str(argument[:int(os.getenv('MAX_COMMAND_ARGUMENT_LENGTH'))])
 
 
-async def send_message_to_channel(ctx, message):
+async def send_message_to_channel(ctx, message, embed=None):
     message = str(message) or 'Empty result'
+
+    if embed:
+        message = ''
+
     discord_user_id = ctx.message.author.id
     message = f"Hi <@{discord_user_id}>, here is your result:\n{message}"
-    await ctx.send(os.getenv('BOT_RESPONSE_PREFIX') + message)
+    await ctx.send(os.getenv('BOT_RESPONSE_PREFIX') + message, embed=embed)
 
 
 def quote(data, *args, **kwargs):
