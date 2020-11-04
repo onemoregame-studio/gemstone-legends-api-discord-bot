@@ -71,7 +71,8 @@ class Players(commands.Cog):
             description=f'{class_name}, {class_type}',
         )
 
-        embed.set_thumbnail(url="https://fpuzzle-static-production.s3.amazonaws.com/public-game-stats-api/profile_avatars/profile_avatar_1.png")
+        if creature_stats.get('creature_avatar'):
+            embed.set_thumbnail(url=creature_stats.get('creature_avatar'))
 
         for stat_name, stat_key in visible_stats.items():
             value = str(creature_stats.get(stat_key, '-'))
