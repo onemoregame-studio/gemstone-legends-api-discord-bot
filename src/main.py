@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-bot = commands.Bot(command_prefix=os.getenv('BOT_COMMAND_PREFIX'))
+bot = commands.Bot(command_prefix=os.getenv('BOT_COMMAND_PREFIX'), help_command=None)
 bot.add_cog(Guilds())
 bot.add_cog(Players())
 

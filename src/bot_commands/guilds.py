@@ -16,7 +16,7 @@ class Guilds(commands.Cog):
         await send_message_to_channel(ctx, '\n'.join(message))
 
 
-    @commands.command(name='top', help='List guilds ranking')
+    @commands.command(name='top_guilds', help='List guilds ranking')
     async def top_clans(self, ctx):
         clans = await GemstoneStatsApi.get_api_response('clans/ranking')
         message = []

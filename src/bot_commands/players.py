@@ -27,8 +27,8 @@ class Players(commands.Cog):
         await send_message_to_channel(ctx, '\n'.join(message))
 
 
-    @commands.command(name='top_wins', help='Top wins yesterday')
-    async def top_wins(self, ctx):
+    @commands.command(name='top_battles', help='Top wins yesterday')
+    async def top_battles(self, ctx):
         top_players = await GemstoneStatsApi.get_api_response('stats/top_battles_won', {'days': 1})
         message = []
 
@@ -93,3 +93,20 @@ class Players(commands.Cog):
             embed.add_field(name=creature_stats.get('Leader_ability', {}).get('name', '-'), value=creature_stats.get('Leader_ability', {}).get('description', '-'), inline=False)
 
         await send_message_to_channel(ctx, '', embed=embed)
+
+    @commands.command(name='help', help='Help')
+    async def help(self, ctx):
+        message = """**GUILDS**
+``!find GUILD_NAME`` - Use it to find guild_id using guild name, e.g. ``!find Crazy Beasts``
+``!guild GUILD_ID`` - Use it to check guild stats, e.g. ``!guild clan_4251#1``
+``!members GUILD_ID`` - Use it to check the guild members and their power, e.g. ``!members clan_4251#1``
+``!place GUILD_ID`` - Use it to check the guild place in the ranking, e.g. ``!place clan_4251#1``
+
+**HEROES**
+``!hero HERO_NAME`` - Use it to find detailed information about each Hero in the game, e.g. ``!hero Wanda``
+
+**RANKINGS**
+``!top_battles`` - Use it to check yesterday's top 10 players with the most battles
+``!top_guilds`` - Use it to list the top 10 Guilds in the game"""
+
+        await send_message_to_channel(ctx, message)
