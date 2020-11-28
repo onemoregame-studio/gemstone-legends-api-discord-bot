@@ -39,6 +39,10 @@ class Players(commands.Cog):
 
     @commands.command(name='hero', help='List hero stats')
     async def hero_stats(self, ctx, *, hero_name: UserInputSanitizer):
+        if not ctx.message.guild:
+            await send_message_to_channel(ctx, 'Command !hero not supported in private messages due to custom guild emojis required to display hero card')
+            return False
+
         if not hero_name:
             await send_message_to_channel(ctx, 'Hero not found')
             return False
