@@ -3,6 +3,7 @@ from utils import send_message_to_channel
 from bot_commands.players import Players
 from bot_commands.guilds import Guilds
 import os
+import traceback
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,8 +20,11 @@ async def on_command_error(ctx, exception):
     if exception_type == commands.errors.CommandNotFound:
         return
 
-    if os.getenv('SEND_DEBUG_TO_CHAT') == 'True' or exception_type == commands.errors.MissingRequiredArgument:
+    if exception_type == commands.errors.MissingRequiredArgument:
         message = str(exception)
+    elif os.getenv('SEND_DEBUG_TO_CHAT') == 'True':
+        traceback_message = ''.join(traceback.format_tb(exception.__traceback__))
+        message = f'{str(exception)} {traceback_message}'
 
     await send_message_to_channel(ctx, message)
 

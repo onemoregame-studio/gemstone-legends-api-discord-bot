@@ -2,6 +2,7 @@ import aiohttp
 import urllib.parse
 from aiocache import cached
 from discord.ext import commands
+from discord import Embed
 import os
 from dotenv import load_dotenv
 
@@ -39,15 +40,26 @@ class UserInputSanitizer(commands.Converter):
 
 
 async def send_message_to_channel(ctx, message, embed=None):
-    message = str(message) or 'Empty result'
+    if _is_private_message(ctx):
+        return
 
-    if embed:
-        message = ''
-
-    discord_user_id = ctx.message.author.id
-    message = f"Hi <@{discord_user_id}>, here is your result:\n{message}"
-    await ctx.send(os.getenv('BOT_RESPONSE_PREFIX') + message, embed=embed)
+    embed = _get_embed(message, embed)
+    greetings = f"{os.getenv('BOT_RESPONSE_PREFIX')}Hi <@{ctx.message.author.id}>, here is your result:"
+    await ctx.send(greetings, embed=embed)
 
 
 def quote(data, *args, **kwargs):
     return urllib.parse.quote_plus(data, *args, **kwargs)
+
+
+def _is_private_message(ctx):
+    return False if ctx.message.guild else True
+
+
+def _get_embed(message, embed):
+    if embed:
+        return embed
+
+    return Embed(
+        description=str(message) or 'Empty result'
+    )

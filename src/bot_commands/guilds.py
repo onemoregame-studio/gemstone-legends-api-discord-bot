@@ -11,7 +11,7 @@ class Guilds(commands.Cog):
         message = []
 
         for clan in clans:
-            message.append(f"**{clan.get('name', '')}**: ``{clan.get('id', '')}``")
+            message.append(f"**{clan.get('name', '')}**: `{clan.get('id', '')}`")
 
         await send_message_to_channel(ctx, '\n'.join(message))
 
@@ -21,7 +21,7 @@ class Guilds(commands.Cog):
         clans = await GemstoneStatsApi.get_api_response('clans/ranking')
         message = []
         for clan in clans:
-            message.append(f"{clan.get('rankingPlace', '')}. **{clan.get('name', '')}** ``POWER:{clan.get('guildPower', 0):,}``")
+            message.append(f"{clan.get('rankingPlace', '')}. **{clan.get('name', '')}** `POWER:{clan.get('guildPower', 0):,}`")
 
         await send_message_to_channel(ctx, '\n'.join(message[:10]))
 
@@ -40,7 +40,7 @@ class Guilds(commands.Cog):
             name = member.get('username', '')
             team_power = member.get('TeamPower', 0)
             user_id = member.get('userId', 0)
-            message.append(f"{place}. **{name}** ``POWER:{team_power:,}`` ``ID:{user_id}``")
+            message.append(f"{place}. **{name}** `POWER:{team_power:,}` `ID:{user_id}`")
 
         await send_message_to_channel(ctx, '\n'.join(message))
 
@@ -52,13 +52,18 @@ class Guilds(commands.Cog):
             return
 
         clan = await GemstoneStatsApi.get_api_response('clans/' + quote(guild_id) + '/stats')
+
+        if not isinstance(clan, dict):
+            await send_message_to_channel(ctx, 'Guild stats not available')
+            return
+
         stats = ["description", "members", "team_power", "created"]
         message = ['**' + clan.get('name', '') + '**']
 
         for stat in stats:
             param = stat.replace('_', ' ').title()
             value = str(clan.get(stat, ''))
-            message.append(f"``{param}``: {value}")
+            message.append(f"`{param}`: {value}")
 
         await send_message_to_channel(ctx, '\n'.join(message))
 
@@ -84,7 +89,7 @@ class Guilds(commands.Cog):
             for clan in result:
                 guild_name = clan.get('name', '')
                 guild_id = clan.get('id', '')
-                found.append(f"**{guild_name}** ``{guild_id}``")
+                found.append(f"**{guild_name}** `{guild_id}`")
 
             message = 'there are several guilds with this name, use guild_id instead of name\n' + '\n'.join(found)
             await send_message_to_channel(ctx, message)
