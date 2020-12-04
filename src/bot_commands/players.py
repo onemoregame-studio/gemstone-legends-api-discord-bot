@@ -187,7 +187,7 @@ class Players(commands.Cog):
     def _get_stats_icons(self):
         icon = namedtuple('icon', ['file_name', 'abbreviation', 'full_name'])
 
-        icons = {
+        icons = [
             icon("hp_icon", 'HP', 'Health'),
             icon("spd_icon", 'SPD', 'SpeedGainFactor'),
             icon("cr_icon", 'CR', 'CriticalChanceFactor'),
@@ -197,7 +197,7 @@ class Players(commands.Cog):
             icon("def_icon", 'DEF', 'Defense'),
             icon("acc_icon", 'ACC', 'Accuracy'),
             icon("mg_icon", 'MG', 'ManaGainFactor')
-        }
+        ]
         return icons
 
 
