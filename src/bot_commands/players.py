@@ -149,8 +149,12 @@ class Players(commands.Cog):
         for ability_name in abilities:
             ability_elements = self._get_ability_elements(creature_stats, ability_name)
 
+            skillName = ability_element.name
+            if ability_name is 'Active_ability' or ability_name is 'Passive_abilities':
+                skillName = f'{ability_element.name} (MAX LEVEL)'
+
             for ability_element in ability_elements:
-                embed.add_field(name=ability_element.name, value=ability_element.description, inline=False)
+                embed.add_field(name=skillName, value=ability_element.description, inline=False)
         return embed
 
 
