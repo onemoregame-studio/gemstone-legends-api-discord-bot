@@ -150,7 +150,7 @@ class Players(commands.Cog):
             ability_elements = self._get_ability_elements(creature_stats, ability_name)
 
             skillName = ability_element.name
-            if ability_name is 'Active_ability' or ability_name is 'Passive_abilities':
+            if ability_name == 'Active_ability' or ability_name == 'Passive_abilities':
                 skillName = f'{ability_element.name} (MAX LEVEL)'
 
             for ability_element in ability_elements:
