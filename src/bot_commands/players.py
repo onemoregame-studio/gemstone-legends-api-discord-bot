@@ -154,7 +154,7 @@ class Players(commands.Cog):
                 skillName = f'{ability_element.name} (MAX LEVEL)'
 
             for ability_element in ability_elements:
-                embed.add_field(name='TEST', value=ability_element.description, inline=False)
+                embed.add_field(name=skillName, value=ability_element.description, inline=False)
         return embed
 
 
