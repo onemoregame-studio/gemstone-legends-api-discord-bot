@@ -1,7 +1,7 @@
 from collections import namedtuple
 from discord.ext import commands
 from discord.utils import get
-from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote
+from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote, validate_color
 import discord
 
 
@@ -37,6 +37,7 @@ class Players(commands.Cog):
 
         await send_message_to_channel(ctx, '\n'.join(message[:10]))
 
+
     @commands.command(name='hero', help='List hero stats')
     async def hero_stats(self, ctx, *, hero_name: UserInputSanitizer):
         if not hero_name:
@@ -52,6 +53,13 @@ class Players(commands.Cog):
         embed = self._get_creature_embed(creature_stats, ctx)
         await send_message_to_channel(ctx, '', embed=embed)
 
+
+    @commands.command(name='color', help='List heroes of specified color')
+    async def heroes_by_color(self, ctx, *, color: UserInputSanitizer):
+        if validate_color(color) == False:
+            await send_message_to_channel(ctx, 'Color not found')
+            return False
+            
 
     def _get_creature_embed(self, creature_stats, ctx):
         embed = self._get_embed_header(creature_stats)
@@ -214,6 +222,7 @@ class Players(commands.Cog):
 
 **HEROES**
 `!hero HERO_NAME` - Use it to find detailed information about each Hero in the game, e.g. `!hero Wanda`
+'!color COLOR' - Use it to list heroes od specified color (possible options are red, green, blue, yellow, purrple), e.g. '!color red'
 
 **RANKINGS**
 `!top_battles` - Use it to check yesterday's top 10 players with the most battles
