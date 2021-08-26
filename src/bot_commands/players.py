@@ -1,7 +1,7 @@
 from collections import namedtuple
 from discord.ext import commands
 from discord.utils import get
-from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote, validate_color, get_statuses, build_statuses_string
+from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote
 import discord
 
 
@@ -205,4 +205,3 @@ class Players(commands.Cog):
             icon("mg_icon", 'MG', 'ManaGainFactor')
         ]
         return icons
-        

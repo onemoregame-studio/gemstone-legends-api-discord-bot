@@ -6,7 +6,9 @@ import discord
 class Heroes(commands.Cog):
     @commands.command(name='color', help='List heroes of specified color')
     async def heroes_by_color(self, ctx, *, color: UserInputSanitizer):
-        if validate_color(color) == False:
+        color_exists = validate_color(color)
+        
+        if color_exists == False:
             await send_message_to_channel(ctx, 'Color not found')
             return False
 

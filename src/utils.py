@@ -108,11 +108,11 @@ def build_statuses_string():
 
 def validate_color(color):
     colors = [
-        "red"
-        "green",
-        "blue",
-        "yellow",
-        "purple"
+        'red'
+        'green',
+        'blue',
+        'yellow',
+        'purple'
     ]
 
     if color in colors:
