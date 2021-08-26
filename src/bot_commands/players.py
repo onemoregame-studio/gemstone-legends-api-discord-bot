@@ -59,6 +59,15 @@ class Players(commands.Cog):
         if validate_color(color) == False:
             await send_message_to_channel(ctx, 'Color not found')
             return False
+
+        heroes_by_color = await GemstoneStatsApi.get_api_response('stats/heroes/' + quote(color))
+
+        if not heroes_by_color:
+            await send_message_to_channel(ctx, 'Heroes lists not awailable at the moment')
+            return False
+
+        embed = self._get_heroes_lists_embed(heroes_by_color, ctx)
+        await send_message_to_channel(ctx, embed=embed)
             
 
     def _get_creature_embed(self, creature_stats, ctx):
@@ -67,6 +76,21 @@ class Players(commands.Cog):
         embed = self._add_stats_to_embed(creature_stats, ctx, embed)
         embed = self._add_abilities_to_embed(creature_stats, embed)
         embed = self._add_equipment_to_embed(creature_stats, ctx, embed)
+        return embed
+
+
+    def _get_heroes_lists_embed(self, heroes_by_color, ctx):   
+        data = {
+            "RED": ["Walter", "Dobrinka"],
+            "GREEN": ["Aya", "Bavric"]
+        }
+        
+        for color, heroes in data:
+            embed = discord.Embed(title=color)
+
+            for hero in heroes:
+                embed = discord.Embed(title=hero)
+
         return embed
 
 
@@ -222,7 +246,7 @@ class Players(commands.Cog):
 
 **HEROES**
 `!hero HERO_NAME` - Use it to find detailed information about each Hero in the game, e.g. `!hero Wanda`
-'!color COLOR' - Use it to list heroes od specified color (possible options are red, green, blue, yellow, purrple), e.g. '!color red'
+'!color COLOR' - Use it to list heroes od specified color (possible options are red, green, blue, yellow, purple), e.g. '!color red'
 
 **RANKINGS**
 `!top_battles` - Use it to check yesterday's top 10 players with the most battles

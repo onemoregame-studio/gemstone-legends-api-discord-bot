@@ -47,6 +47,7 @@ async def send_message_to_channel(ctx, message, embed=None):
     greetings = f"{os.getenv('BOT_RESPONSE_PREFIX')}Hi <@{ctx.message.author.id}>, here is your result:"
     await ctx.send(greetings, embed=embed)
 
+
 def validate_color(color):
     colors = [
         "red"
