@@ -2,14 +2,19 @@ from discord.ext import commands
 from utils import send_message_to_channel
 from bot_commands.players import Players
 from bot_commands.guilds import Guilds
+from bot_commands.others import Others
+from bot_commands.heroes import Heroes
 import os
 import traceback
 from dotenv import load_dotenv
+
 
 load_dotenv()
 bot = commands.Bot(command_prefix=os.getenv('BOT_COMMAND_PREFIX'), help_command=None)
 bot.add_cog(Guilds())
 bot.add_cog(Players())
+bot.add_cog(Others())
+bot.add_cog(Heroes())
 
 
 @bot.event

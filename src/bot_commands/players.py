@@ -1,7 +1,7 @@
 from collections import namedtuple
 from discord.ext import commands
 from discord.utils import get
-from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote, validate_color
+from utils import  GemstoneStatsApi, UserInputSanitizer, send_message_to_channel, quote, validate_color, get_statuses, build_statuses_string
 import discord
 
 
@@ -52,22 +52,6 @@ class Players(commands.Cog):
 
         embed = self._get_creature_embed(creature_stats, ctx)
         await send_message_to_channel(ctx, '', embed=embed)
-
-
-    @commands.command(name='color', help='List heroes of specified color')
-    async def heroes_by_color(self, ctx, *, color: UserInputSanitizer):
-        if validate_color(color) == False:
-            await send_message_to_channel(ctx, 'Color not found')
-            return False
-
-        heroes_by_color = await GemstoneStatsApi.get_api_response('stats/heroes/' + quote(color))
-
-        if not heroes_by_color:
-            await send_message_to_channel(ctx, 'Heroes lists not awailable at the moment')
-            return False
-
-        embed = self._get_heroes_lists_embed(heroes_by_color, ctx)
-        await send_message_to_channel(ctx, embed=embed)
             
 
     def _get_creature_embed(self, creature_stats, ctx):
@@ -76,21 +60,6 @@ class Players(commands.Cog):
         embed = self._add_stats_to_embed(creature_stats, ctx, embed)
         embed = self._add_abilities_to_embed(creature_stats, embed)
         embed = self._add_equipment_to_embed(creature_stats, ctx, embed)
-        return embed
-
-
-    def _get_heroes_lists_embed(self, heroes_by_color, ctx):   
-        data = {
-            "RED": ["Walter", "Dobrinka"],
-            "GREEN": ["Aya", "Bavric"]
-        }
-        
-        for color, heroes in data:
-            embed = discord.Embed(title=color)
-
-            for hero in heroes:
-                embed = discord.Embed(title=hero)
-
         return embed
 
 
@@ -112,6 +81,7 @@ class Players(commands.Cog):
             embed.set_thumbnail(url=avatar_url)
         return embed
 
+
     def _add_stats_to_embed(self, creature_stats, ctx, embed):
         visible_stats = self._get_visible_stats(ctx)
 
@@ -119,6 +89,7 @@ class Players(commands.Cog):
             numeric_value = self._get_numeric_value(creature_stats, stat_key)
             embed.add_field(name=stat_name, value=numeric_value, inline=True)
         return embed
+
 
     def _get_numeric_value(self, creature_stats, stat_key):
         numeric_value = str(creature_stats.get(stat_key, '-'))
@@ -234,22 +205,4 @@ class Players(commands.Cog):
             icon("mg_icon", 'MG', 'ManaGainFactor')
         ]
         return icons
-
-
-    @commands.command(name='help', help='Help')
-    async def help(self, ctx):
-        message = """**GUILDS**
-`!find GUILD_NAME` - Use it to find guild_id using guild name, e.g. `!find Crazy Beasts`
-`!guild GUILD_ID` - Use it to check guild stats, e.g. `!guild clan_4251#1`
-`!members GUILD_ID` - Use it to check the guild members and their power, e.g. `!members clan_4251#1`
-`!place GUILD_ID` - Use it to check the guild place in the ranking, e.g. `!place clan_4251#1`
-
-**HEROES**
-`!hero HERO_NAME` - Use it to find detailed information about each Hero in the game, e.g. `!hero Wanda`
-'!color COLOR' - Use it to list heroes od specified color (possible options are red, green, blue, yellow, purple), e.g. '!color red'
-
-**RANKINGS**
-`!top_battles` - Use it to check yesterday's top 10 players with the most battles
-`!top_guilds` - Use it to list the top 10 Guilds in the game"""
-
-        await send_message_to_channel(ctx, message)
+        
