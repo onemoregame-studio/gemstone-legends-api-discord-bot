@@ -155,7 +155,7 @@ class Players(commands.Cog):
             for ability_element in ability_elements:
                 skill_name = ability_element.name
                 if ability_name == 'Active_ability' or ability_name == 'Passive_abilities':
-                    skill_name = f'{ability_element.name} (MAX LEVEL)'
+                    skill_name = f'{ability_element.name}'
                 embed.add_field(name=skill_name, value=ability_element.description, inline=False)
         return embed
 
