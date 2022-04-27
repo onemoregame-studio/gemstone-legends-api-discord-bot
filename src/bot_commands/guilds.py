@@ -15,7 +15,6 @@ class Guilds(commands.Cog):
 
         await send_message_to_channel(ctx, '\n'.join(message))
 
-
     @commands.command(name='top_guilds', help='List guilds ranking')
     async def top_clans(self, ctx):
         clans = await GemstoneStatsApi.get_api_response('clans/ranking')
@@ -25,7 +24,6 @@ class Guilds(commands.Cog):
 
         await send_message_to_channel(ctx, '\n'.join(message[:10]))
 
-
     @commands.command(name='members', help='List guild members ordered by Team Power')
     async def clan_members_ranking(self, ctx, *, guild_name: UserInputSanitizer):
         guild_id = await self.find_clan_id_by_name(ctx, guild_name)
@@ -33,17 +31,16 @@ class Guilds(commands.Cog):
             return
 
         members = await GemstoneStatsApi.get_api_response('clans/' + quote(guild_id) + '/members')
-        members.sort(key=lambda x: x.get('TeamPower', 0), reverse=True)
+        members.sort(key=lambda x: x.get('team_power', 0), reverse=True)
         message = []
-
         for place, member in enumerate(members, 1):
-            name = member.get('username', '')
-            team_power = member.get('TeamPower', 0)
-            user_id = member.get('userId', 0)
-            message.append(f"{place}. **{name}** `POWER:{team_power:,}` `ID:{user_id}`")
+            name = member.get('nick', '')
+            user_id = member.get('id', -1)
+            level = member.get('level', -1)
+            team_power = member.get('team_power', -1)
+            message.append(f"{place}. **{name}** `ID: {user_id}, Level: {level}, Team power: {team_power:,}`")
 
         await send_message_to_channel(ctx, '\n'.join(message))
-
 
     @commands.command(name='guild', help='List guild stats')
     async def clan_stats(self, ctx, *, guild_name: UserInputSanitizer):
@@ -66,7 +63,6 @@ class Guilds(commands.Cog):
             message.append(f"`{param}`: {value}")
 
         await send_message_to_channel(ctx, '\n'.join(message))
-
 
     async def find_clan_id_by_name(self, ctx, guild_name):
         guild_name = guild_name.lower()
@@ -96,7 +92,6 @@ class Guilds(commands.Cog):
             return False
 
         return result[0].get('id', '')
-
 
     @commands.command(name='place', help='Show guild ranking place')
     async def clan_place(self, ctx, *, guild_name: UserInputSanitizer):
