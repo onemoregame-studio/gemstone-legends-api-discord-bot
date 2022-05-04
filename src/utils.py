@@ -48,67 +48,9 @@ async def send_message_to_channel(ctx, message, embed=None):
     await ctx.send(greetings, embed=embed)
 
 
-def get_statuses():
-    return [
-        "adapt",
-        "assassin_mark",
-        "bleed",
-        "blind",
-        "board_jester",
-        "board_king",
-        "burn",
-        "color_blindness",
-        "color_master",
-        "curse",
-        "decrease_accuracy",
-        "decrease_attack",
-        "decrease_critical_chance",
-        "decrease_critical_damage",
-        "decrease_defense",
-        "decrease_resistance",
-        "decrease_speed",
-        "degrade",
-        "endurance",
-        "fortify",
-        "freeze",
-        "heal_block",
-        "immunity",
-        "increase_accuracy",
-        "increase_attack",
-        "increase_critical_chance",
-        "increase_critical_damage",
-        "increase_defense",
-        "increase_resistance",
-        "increase_speed",
-        "invincible",
-        "life_leech",
-        "mana_breath",
-        "mana_choke",
-        "mana_leech",
-        "poison",
-        "provoke",
-        "recovery",
-        "reflect",
-        "shield",
-        "silence",
-        "sleep",
-        "soul_link",
-        "soul_replenish",
-        "stun",
-        "taunt",
-        "vampirism",
-        "vulnerability"
-    ]
-
-
-def build_statuses_string():
-    separator = ', '
-    return separator.join(get_statuses())
-
-
 def validate_color(color):
     colors = [
-        'red'
+        'red',
         'green',
         'blue',
         'yellow',
@@ -119,6 +61,21 @@ def validate_color(color):
         return True
     
     return False
+
+
+def get_color_from_string(color_name: str) -> int:
+    colors = {
+        'red': 0xFF5733,
+        'blue': 0x3498DB,
+        'green': 0x27AE60,
+        'yellow': 0xF4D03F,
+        'purple': 0x8E44AD
+    }
+
+    if color_name in colors:
+        return colors[color_name]
+    else:
+        return 0x17202A
 
 
 def quote(data, *args, **kwargs):

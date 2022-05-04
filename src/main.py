@@ -8,7 +8,6 @@ import os
 import traceback
 from dotenv import load_dotenv
 
-
 load_dotenv()
 bot = commands.Bot(command_prefix=os.getenv('BOT_COMMAND_PREFIX'), help_command=None)
 bot.add_cog(Guilds())
@@ -51,7 +50,7 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 
-def main():
+def main():  # If there was a problem with the certificate, run install_certify.py
     print('Connecting...')
     bot.run(os.getenv('DISCORD_TOKEN'))
 
