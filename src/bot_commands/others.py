@@ -16,7 +16,6 @@ class Others(commands.Cog):
         # **HEROES**
         `!hero HERO_NAME` - Use it to find detailed information about each Hero in the game, e.g. `!hero Wanda`
         `!color COLOR` - Use it to list heroes od specified color (possible options are: red, green, blue, yellow, purple), e.g. `!color red`
-        `!heroes STATUS_NAME` - Use to find heroes using a given status, e.g. `!heroes stun`
     
         # **RANKINGS**
         `!top_battles` - Use it to check yesterday's top 10 players with the most battles
@@ -24,15 +23,20 @@ class Others(commands.Cog):
                 
         # **STATUSES**
         `!statuses` - Use it to list possible statuses (in alphabetical order)
-        `!status STATUS_NAME` - Get status description, e.g. `!status stun`
+        `!status STATUS_NAME` - Get status name, description and creatures that use it, e.g. `!status stun`
         """
 
         await send_message_to_channel(ctx, message)
 
-    @commands.command(name='status', help='Get description of a status')
-    async def status_description(self, ctx, *, status_id: str):
-        status_desc = await GemstoneStatsApi.get_api_response('statuses/status/' + quote(status_id))
-        await send_message_to_channel(ctx, f'**{status_id}**: {status_desc}')
+    @commands.command(name='status', help='Get status details')
+    async def status_details(self, ctx, *, status_id: str):
+        status_details = await GemstoneStatsApi.get_api_response('statuses/status/' + quote(status_id))
+
+        heroes = ", ".join(status_details['UsedByCreatures'])
+        embed = discord.Embed(title=status_details['Name'], description=status_details['Desc'])\
+            .add_field(name='Used by:', value=heroes)
+
+        await send_message_to_channel(ctx, '', embed)
 
     @commands.command(name='statuses', help='Get all possible statuses list')
     async def list_all_statuses(self, ctx):
@@ -52,9 +56,6 @@ class Others(commands.Cog):
             for status in grouped_by_name[first_char]:
                 statuses_names += f'\n{status},'
 
-            embed.add_field(
-                name=f'{first_char.upper()}:',
-                value=statuses_names
-            )
+            embed.add_field(name=f'{first_char.upper()}:', value=statuses_names)
 
         await send_message_to_channel(ctx, '', embed)

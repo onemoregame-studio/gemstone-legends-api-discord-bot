@@ -57,21 +57,6 @@ class Heroes(commands.Cog):
         embed = self._get_creature_embed(creature_stats, ctx)
         await send_message_to_channel(ctx, '', embed=embed)
 
-    @commands.command(name='heroes', help='Heroes who use the skill')
-    async def heroes_with_status(self, ctx, *, status_id):
-        heroes = await GemstoneStatsApi.get_api_response('statuses/heroes/' + quote(status_id))
-        if not heroes:
-            await send_message_to_channel(ctx, f'No heroes using {status_id} found.')
-            return
-
-        msg: str = ''
-        for hero in heroes:
-            msg += f'{hero}, '
-        msg = msg[:-2]
-
-        embed = discord.Embed(title=f'Heroes with {status_id}:', description=msg)
-        await send_message_to_channel(ctx, '', embed)
-
     def _get_creature_embed(self, creature_stats, ctx):
         embed = self._get_embed_header(creature_stats)
         embed = self._add_avatar_to_embed(creature_stats, embed)
