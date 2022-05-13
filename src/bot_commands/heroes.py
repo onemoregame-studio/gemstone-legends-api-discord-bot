@@ -73,6 +73,7 @@ class Heroes(commands.Cog):
         return discord.Embed(
             title=creature_name,
             description=f'{class_name}, {class_type}',
+            colour=get_color_from_string(creature_stats['Color'])
         )
 
     def _add_avatar_to_embed(self, creature_stats, embed):

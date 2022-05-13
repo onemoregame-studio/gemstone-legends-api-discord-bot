@@ -64,6 +64,7 @@ def validate_color(color):
 
 
 def get_color_from_string(color_name: str) -> int:
+    color_name = color_name.lower()
     colors = {
         'red': 0xFF5733,
         'blue': 0x3498DB,
