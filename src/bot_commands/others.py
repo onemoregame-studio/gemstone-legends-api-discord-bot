@@ -32,7 +32,11 @@ class Others(commands.Cog):
     async def status_details(self, ctx, *, status_id: str):
         status_details = await GemstoneStatsApi.get_api_response('statuses/status/' + quote(status_id))
 
-        heroes = ", ".join(status_details['UsedByCreatures'])
+        heroes = ""
+        for hero_details in status_details['UsedByCreatures']:
+            separated_details = hero_details.split(" | ")
+            heroes += f"> **{separated_details[0]}** - {separated_details[1].lower()} | {separated_details[2].lower()},\n"
+
         embed = discord.Embed(title=status_details['Name'], description=status_details['Desc'])\
             .add_field(name='Used by:', value=heroes)
 

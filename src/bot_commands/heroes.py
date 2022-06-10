@@ -31,7 +31,9 @@ class Heroes(commands.Cog):
 
         embed = discord.Embed(title=f'{color.upper()} Heroes by rarity:', colour=get_color_from_string(color))
         for rarity in grouped_by_rarity:
+            grouped_by_rarity[rarity].sort(key=lambda x: x.get('Name'))
             heroes_names: str = ''
+
             for hero in grouped_by_rarity[rarity]:
                 heroes_names += hero['Name'] + ', '
 
@@ -66,13 +68,13 @@ class Heroes(commands.Cog):
         return embed
 
     def _get_embed_header(self, creature_stats):
-        creature_name = creature_stats.get('Name', '')
-        class_name = creature_stats.get('Class_abilities', {}).get('name', '').title()
-        class_type = creature_stats.get('Class_abilities', {}).get('type', '').title()
+        class_abilities = creature_stats.get('Class_abilities', {})
+        class_name = class_abilities.get('name', '').title()
+        class_type = class_abilities.get('type', '').title()
 
         return discord.Embed(
-            title=creature_name,
-            description=f'{class_name}, {class_type}',
+            title=creature_stats.get('Name', ''),
+            description='{} | {} | {}'.format(creature_stats['Faction'], class_name, class_type),
             colour=get_color_from_string(creature_stats['Color'])
         )
 
