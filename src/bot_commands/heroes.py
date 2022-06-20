@@ -74,7 +74,7 @@ class Heroes(commands.Cog):
 
         return discord.Embed(
             title=creature_stats.get('Name', ''),
-            description='{} | {} | {}'.format(creature_stats['Faction'], class_name, class_type),
+            description='{} | {} | {}'.format(creature_stats.get('Faction', ""), class_name, class_type),
             colour=get_color_from_string(creature_stats['Color'])
         )
 
